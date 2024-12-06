@@ -1,12 +1,10 @@
-package uz.pro.usm.repository.user;
+package uz.pdp.lms.modules.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import uz.pro.usm.domain.entity.user.Permission;
-
+import uz.pdp.lms.modules.user.entity.Permission;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission,Long> {

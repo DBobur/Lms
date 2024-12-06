@@ -1,8 +1,8 @@
-package uz.pro.usm.domain.entity.user;
+package uz.pdp.lms.modules.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import uz.pro.usm.domain.entity.BaseEntity;
+import uz.pdp.lms.core.common.BaseEntity;
 
 import java.util.List;
 

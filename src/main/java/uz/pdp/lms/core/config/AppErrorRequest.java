@@ -1,4 +1,4 @@
-package uz.pro.usm.security;
+package uz.pdp.lms.core.config;
 
 import java.time.LocalDateTime;
 

@@ -1,12 +1,10 @@
-package uz.pro.usm.domain.entity.user;
+package uz.pdp.lms.modules.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +29,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 public class User implements UserDetails {
 
     @Id

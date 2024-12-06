@@ -1,13 +1,11 @@
-package uz.pro.usm.domain.entity.user;
+package uz.pdp.lms.modules.user.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
-import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
-import uz.pro.usm.domain.entity.BaseEntity;
+import uz.pdp.lms.core.common.BaseEntity;
+
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity

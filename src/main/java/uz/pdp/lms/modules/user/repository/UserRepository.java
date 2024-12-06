@@ -1,9 +1,9 @@
-package uz.pro.usm.repository.user;
+package uz.pdp.lms.modules.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
-import uz.pro.usm.domain.entity.user.User;
+import uz.pdp.lms.modules.user.entity.User;
 
 import java.util.Optional;
 
