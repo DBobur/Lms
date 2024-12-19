@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 
 @Builder
 public record PermissionResponse(Long id,
-                                 String permission,
+                                 String name,
                                  String description) {}

@@ -22,9 +22,9 @@ public class JwtTokenUtil {
     @Value("${jwt.expiration}")
     private Long expirationTime;
 
-    public String generateToken(@NonNull String username, Map<String, Object> extraClaims) {
+    public String generateToken(@NonNull String username) { // todo: Map<String, Object> extraClaims
         return Jwts.builder()
-                .setClaims(extraClaims)
+                //.setClaims(extraClaims)
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setIssuer("http://localhost:8080/uz.pro.usm")
