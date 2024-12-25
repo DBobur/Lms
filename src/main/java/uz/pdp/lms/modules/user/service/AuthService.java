@@ -21,6 +21,7 @@ import uz.pdp.lms.modules.user.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -36,7 +37,7 @@ public class AuthService {
     @Transactional
     public UserResponse save(@Valid UserRequest request) {
         Role defaultRole = roleRepository.findByName("USER")
-                .orElseThrow(() -> new ResourceNotFoundException("Default role not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Default  role not found"));
 
         User user = User.builder()
                 .username(request.getUsername())
@@ -46,7 +47,7 @@ public class AuthService {
                 .number(request.getNumber())
                 .address(request.getAddress())
                 .dateOfBirth(LocalDate.parse(request.getDateOfBirth()))
-                .roles(List.of(defaultRole))
+                .roles(Set.of(defaultRole))
                 .build();
 
         userRepository.save(user);

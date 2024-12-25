@@ -2,6 +2,9 @@ package uz.pdp.lms.modules.user.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uz.pdp.lms.core.domain.mapper.PermissionMapper;
 import uz.pdp.lms.core.domain.request.user.PermissionRequest;
@@ -17,6 +20,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PermissionService {
+
+    private static final Logger log = LoggerFactory.getLogger(PermissionService.class);
 
     private final PermissionRepository permissionRepository;
 
@@ -36,6 +41,7 @@ public class PermissionService {
     public PermissionResponse createPermission(PermissionRequest permissionRequest) {
         Permission permission = Permission.builder()
                 .name(permissionRequest.getName())
+                .description(permissionRequest.getDescription())
                 .build();
         Permission savedPermission = permissionRepository.save(permission);
         return PermissionMapper.from(savedPermission);
@@ -60,4 +66,18 @@ public class PermissionService {
         }
         permissionRepository.deleteById(id);
     }
+
+    @Transactional
+    public Permission saveIfNotExists(String name, String description) {
+        return permissionRepository.findByName(name)
+                .orElseGet(() -> {
+                    log.info("Permission not found, creating new: {}", name);
+                    Permission newPermission = Permission.builder()
+                            .name(name)
+                            .description(description)
+                            .build();
+                    return permissionRepository.save(newPermission);
+                });
+    }
+
 }

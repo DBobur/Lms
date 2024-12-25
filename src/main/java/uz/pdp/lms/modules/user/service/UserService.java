@@ -28,7 +28,9 @@ import uz.pdp.lms.modules.user.util.PasswordResetTokenRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -79,10 +81,16 @@ public class UserService {
 
 
     public Page<UserResponse> getAllUsers(String roleName, Pageable pageable, boolean active) {
-        Specification<User> spec = Specification.where(UserSpecifications.hasRoleName(roleName));
-        Page<User> users = userRepository.findAll(spec, pageable);
+        /*Specification<User> spec = Specification.where(UserSpecifications.hasRoleName(roleName))
+                .and((root, query, criteriaBuilder) ->
+                        criteriaBuilder.equal(root.get("isDeleted"), false) // Deleted emasligi uchun.
+                );
+
+        Page<User> users = userRepository.findAll(spec, pageable);*/
+        Page<User> users = userRepository.findAll(pageable);
         return users.map(UserMapper::from);
     }
+
 
 
     public UserResponse getUserById(Long id) {
@@ -91,7 +99,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUserRoles(Long userId, List<Long> roleIds) {
+    public void updateUserRoles(Long userId, Set<Long> roleIds) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id " + userId + " not found"));
 
@@ -99,15 +107,15 @@ public class UserService {
             throw new IllegalArgumentException("Role IDs must not be empty. Please provide valid role IDs.");
         }
 
-        List<Role> roles = roleRepository.findAllById(roleIds);
+        Set<Role> roles = roleRepository.findAllByIdIn(roleIds);
         if (roles.size() != roleIds.size()) {
-            List<Long> missingRoleIds = roleIds.stream()
+            Set<Long> missingRoleIds = roleIds.stream()
                     .filter(id -> roles.stream().noneMatch(role -> role.getId().equals(id)))
-                    .toList();
+                    .collect(Collectors.toSet());
             throw new ResourceNotFoundException("Roles not found for IDs: " + missingRoleIds);
         }
 
-        user.setRoles(new ArrayList<>(roles));
+        user.setRoles(roles);
         userRepository.save(user);
     }
 
@@ -145,4 +153,12 @@ public class UserService {
         passwordResetTokenRepository.delete(resetToken);
     }
 
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
+
+    @Transactional
+    public void save(User superAdmin) {
+        userRepository.save(superAdmin);
+    }
 }

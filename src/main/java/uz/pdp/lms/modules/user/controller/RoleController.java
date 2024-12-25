@@ -1,5 +1,6 @@
 package uz.pdp.lms.modules.user.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,7 +33,7 @@ public class RoleController {
     //@PreAuthorize("hasRole('SUPER')")
     @PostMapping()
     public ResponseEntity<String> createRole(
-            @RequestBody RoleRequest roleRequest) {
+           @Valid @RequestBody RoleRequest roleRequest) {
 
         // Rol yaratish jarayoni
         RoleResponse newRole = roleService.createRole(roleRequest);

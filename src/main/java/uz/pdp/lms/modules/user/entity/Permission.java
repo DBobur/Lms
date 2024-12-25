@@ -5,8 +5,9 @@ import lombok.*;
 import uz.pdp.lms.core.common.BaseEntity;
 
 import java.util.List;
+import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "roles")
 @Entity
 @Table(
         name = "permissions",
@@ -25,5 +26,5 @@ public class Permission extends BaseEntity {
     private String description;
 
     @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
-    private List<Role> roles;
+    private Set<Role> roles;
 }

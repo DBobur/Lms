@@ -30,7 +30,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         String authorization = request.getHeader("Authorization");
 
-        // 1. Authorization sarlavhasini tekshirish
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             log.warn("Authorization sarlavhasi topilmadi yoki noto'g'ri format: {}", authorization);
             filterChain.doFilter(request, response);
@@ -39,20 +38,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         String token = authorization.substring(7);
 
-        // 2. Token validatsiyasi
         if (!jwtTokenUtil.isValid(token)) {
             log.warn("Yaroqsiz token: {}", token);
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 3. SecurityContextHolder'ni tekshirish
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 4. Tokenning foydalanuvchi ma'lumotlarini olish
         String username = jwtTokenUtil.getUsername(token);
         UserDetails userDetails;
         try {
@@ -63,14 +59,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 5. SecurityContextHolder'ga foydalanuvchini o'rnatish
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.getAuthorities()
-        );
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                userDetails, null, userDetails.getAuthorities());
+        var webAuthenticationDetails = new WebAuthenticationDetailsSource().buildDetails(request);
+        authentication.setDetails(webAuthenticationDetails);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        filterChain .doFilter(request,response);
+        /*authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // 6. Filtrni davom ettirish
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response);*/
     }
 }

@@ -1,5 +1,6 @@
 package uz.pdp.lms.modules.user.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,7 +33,7 @@ public class PermissionController {
 
     @PreAuthorize("hasRole('SUPER')")
     @PostMapping
-    public ResponseEntity<PermissionResponse> createPermission(@RequestBody PermissionRequest permissionRequest) {
+    public ResponseEntity<PermissionResponse> createPermission(@Valid @RequestBody PermissionRequest permissionRequest) {
         PermissionResponse newPermission = rolePermissionService.createPermission(permissionRequest);
         return ResponseEntity.ok(newPermission);
     }

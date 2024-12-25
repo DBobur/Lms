@@ -15,6 +15,7 @@ import uz.pdp.lms.core.domain.response.user.UserResponse;
 import uz.pdp.lms.modules.user.service.UserService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -49,7 +50,7 @@ public class UserController {
     @PutMapping("/{id}/roles")
     public ResponseEntity<String> updateUserRoles(
             @PathVariable Long id,
-            @RequestBody List<Long> roleIds) {
+            @RequestBody Set<Long> roleIds) {
         userService.updateUserRoles(id, roleIds);
         return ResponseEntity.ok("User roles updated successfully");
     }
