@@ -13,7 +13,7 @@ import uz.pdp.lms.modules.user.service.PermissionService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/permission")
+@RequestMapping("/api/v1/permission")
 @RequiredArgsConstructor
 public class PermissionController {
 

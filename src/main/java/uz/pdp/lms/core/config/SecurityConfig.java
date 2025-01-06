@@ -65,8 +65,8 @@ public class SecurityConfig {
                 .cors().and() // CORS sozlamalari faollashtirildi
                 .authorizeHttpRequests()
                 .requestMatchers(
-                        "/auth/login",
-                        "/auth/register",
+                        "/api/v1/auth/login",
+                        "/api/v1/auth/register",
                         "/api/v1/user/reset-password",
                         "/api/v1/user/confirm-reset",
                         "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"

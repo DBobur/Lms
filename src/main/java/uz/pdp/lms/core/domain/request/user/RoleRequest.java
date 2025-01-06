@@ -18,5 +18,5 @@ public class RoleRequest {
     private final String name;
 
     @NotEmpty(message = "Permission IDs must not be empty")
-    private final Set<Long> permissionIds;
+    private final Set<String> permissions;
 }

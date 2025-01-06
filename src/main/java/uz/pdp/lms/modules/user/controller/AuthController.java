@@ -14,7 +14,7 @@ import uz.pdp.lms.core.domain.response.user.UserResponse;
 import uz.pdp.lms.modules.user.service.AuthService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -22,21 +22,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequest request) {
-        try {
-            String token = authService.login(request);
-            return ResponseEntity.ok(token);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: " + e.getMessage());
-        }
+        String token = authService.login(request);
+        return ResponseEntity.ok(token);
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@Valid @RequestBody UserRequest request) {
-        try {
+
             UserResponse userResponse = authService.save(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.lms.core.config.CustomUserdetailsService;
 import uz.pdp.lms.core.config.JwtTokenUtil;
+import uz.pdp.lms.core.domain.mapper.RoleMapper;
 import uz.pdp.lms.core.domain.mapper.UserMapper;
 import uz.pdp.lms.core.domain.request.user.LoginRequest;
 import uz.pdp.lms.core.domain.request.user.UserRequest;
@@ -20,8 +21,10 @@ import uz.pdp.lms.modules.user.repository.RoleRepository;
 import uz.pdp.lms.modules.user.repository.UserRepository;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -36,9 +39,6 @@ public class AuthService {
 
     @Transactional
     public UserResponse save(@Valid UserRequest request) {
-        Role defaultRole = roleRepository.findByName("USER")
-                .orElseThrow(() -> new ResourceNotFoundException("Default  role not found"));
-
         User user = User.builder()
                 .username(request.getUsername())
                 .fullName(request.getFullName())
@@ -47,9 +47,12 @@ public class AuthService {
                 .number(request.getNumber())
                 .address(request.getAddress())
                 .dateOfBirth(LocalDate.parse(request.getDateOfBirth()))
-                .roles(Set.of(defaultRole))
-                .build();
+                .roles(request.getRoles().stream()
+                .map(roleName -> roleRepository.findByName(roleName)
+                        .orElseThrow(() -> new ResourceNotFoundException("Role not found: " + roleName)))
+                .collect(Collectors.toSet()))
 
+                .build();
         userRepository.save(user);
         return UserMapper.from(user);
     }

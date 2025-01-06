@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Builder
@@ -20,5 +21,5 @@ public record UserResponse(Long id,
                            String number,
                            String address,
                            LocalDate dateOfBirth,
-                           List<String> roles) {}
+                           Set<String> roles) {}
 

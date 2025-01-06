@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -37,7 +39,10 @@ public class UserRequest {
 
     private String address;
 
-    private String dateOfBirth; // YYYY-MM-DD
+    private String dateOfBirth;// YYYY-MM-DD
+
+    @NotBlank
+    private Set<String> roles;
 
 }
 

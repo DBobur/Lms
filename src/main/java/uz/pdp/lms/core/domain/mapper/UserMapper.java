@@ -33,7 +33,7 @@ public class UserMapper {
                 .dateOfBirth(user.getDateOfBirth())
                 .roles(user.getRoles().stream()
                         .map(Role::getName)
-                        .collect(Collectors.toList()))
+                        .collect(Collectors.toSet()))
                 .build();
     }
 }

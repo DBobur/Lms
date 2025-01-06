@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-//@EqualsAndHashCode(exclude = "roles")
+@EqualsAndHashCode
 @Entity
 @Table(
         name = "users",

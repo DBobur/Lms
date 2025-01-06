@@ -44,7 +44,7 @@ public class RoleService {
         Role role = Role.builder()
                 .name(roleRequest.getName())
                 .permissions(
-                        permissionRepository.findAllByIdIn(roleRequest.getPermissionIds())
+                        permissionRepository.findAllByNameIn(roleRequest.getPermissions())
                 )
                 .build();
         Role savedRole = roleRepository.save(role);
@@ -53,38 +53,49 @@ public class RoleService {
 
     @Transactional
     public RoleResponse updateRole(Long id, RoleRequest roleRequest) {
-
         Role role = roleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Role with id " + id + " not found"));
 
-        BaseHelper.updateIfPresent(roleRequest.getName(),role::setName);
+        // Update name if present
+        BaseHelper.updateIfPresent(roleRequest.getName(), role::setName);
+
+        // Update permissions by name if present
         BaseHelper.updateIfPresent(
-                roleRequest.getPermissionIds(),
-                permissionIds -> {
-                    Set<Permission> permissions = validatePermissions(permissionIds);
+                roleRequest.getPermissions(),
+                permissionNames -> {
+                    Set<Permission> permissions = validatePermissions(permissionNames);
                     role.setPermissions(permissions);
                 }
         );
+
+        // Save the updated role
         Role updatedRole = roleRepository.save(role);
 
         return RoleMapper.fromRes(updatedRole);
     }
 
-    private Set<Permission> validatePermissions(Set<Long> permissionIds) {
-        Set<Permission> permissions = permissionRepository.findAllByIdIn(permissionIds);
-        Set<Long> foundIds = permissions.stream()
-                .map(Permission::getId)
-                .collect(Collectors.toSet());
-        Set<Long> missingIds = permissionIds.stream()
-                .filter(id -> !foundIds.contains(id))
+
+    private Set<Permission> validatePermissions(Set<String> permissionNames) {
+        // Find permissions by their names
+        Set<Permission> permissions = permissionRepository.findAllByNameIn(permissionNames);
+
+        // Get the set of names of the found permissions
+        Set<String> foundNames = permissions.stream()
+                .map(Permission::getName)
                 .collect(Collectors.toSet());
 
-        if (!missingIds.isEmpty()) {
-            throw new IllegalArgumentException("Permissions with IDs " + missingIds + " not found");
+        // Find names that are missing
+        Set<String> missingNames = permissionNames.stream()
+                .filter(name -> !foundNames.contains(name))
+                .collect(Collectors.toSet());
+
+        if (!missingNames.isEmpty()) {
+            throw new IllegalArgumentException("Permissions with names " + missingNames + " not found");
         }
 
         return permissions;
     }
+
 
     @Transactional
     public void deleteRole(Long id) {
