@@ -1,9 +1,9 @@
-package uz.pdp.lms.core.common;
+package uz.pdp.lms.modules.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import uz.pdp.lms.modules.schedule.entity.Schedule;
-import uz.pdp.lms.modules.user.entity.User;
+import uz.pdp.lms.core.common.BaseEntity;
+import uz.pdp.lms.modules.attendance.entity.Schedule;
 
 import java.util.List;
 import java.util.Set;
@@ -18,7 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
-public class Group extends BaseEntity{
+public class Group extends BaseEntity {
     private String groupName;
 
     @ManyToMany

@@ -1,4 +1,4 @@
-package uz.pdp.lms.modules.schedule.entity;
+package uz.pdp.lms.modules.attendance.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
