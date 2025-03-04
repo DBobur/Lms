@@ -1,9 +1,6 @@
 package uz.pdp.lms.core.domain.request.user;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,7 +38,7 @@ public class UserRequest {
 
     private String dateOfBirth;// YYYY-MM-DD
 
-    @NotBlank
+    @NotEmpty
     private Set<String> roles;
 
 }
